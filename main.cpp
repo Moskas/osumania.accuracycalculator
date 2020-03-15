@@ -30,6 +30,8 @@ int main()
     cout << "A twoje ratio to: 1:"/* << marvelous << ":" << perfect << " = "*/ << setprecision(4) << PA << endl;
     cout << "Jeszcze raz? Y-Tak, N-Nie: "<< endl;
     cin >> R;
+        if(R!= 'Y' || 'y')
+            return 0;
     } while (R == 'Y' || 'y');
     return 0;
 }
