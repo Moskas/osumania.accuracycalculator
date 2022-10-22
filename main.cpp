@@ -1,37 +1,41 @@
-#include <iostream>
+#include <algorithm>
 #include <iomanip>
-// Kalkulator ACC dla score v1 w osu!mania
-float marvelous, perfect, great, good, bad, miss,PA;
-long float accuracy;
+#include <iostream>
+#include <string>
+#include <vector>
+#define clean cout << "\x1B[2J\x1B[H"
+#define cout std::cout
+#define endl std::endl
+#define cin std::cin
+float accuracy;
 char R;
-using namespace std;
-int acc(float marvelous, float perfect, float great, float  good, float bad, float miss) {
-    //Zczytywanie trafien
-    cout << "Podaj liczbe trafien... " << endl;
-    cout << "300g:\t"; cin >> marvelous;
-    cout << "300:\t"; cin >> perfect;
-    cout << "200:\t"; cin >> great;
-    cout << "100:\t"; cin >> good;
-    cout << "50:\t"; cin >> bad;
-    cout << "Miss:\t"; cin >> miss;
-    //Wzor na ACC
-    accuracy = (50 * bad + 100 * good + 200 * great + 300 * (perfect + marvelous)) / (300 * (miss + bad + good + great + perfect + marvelous))*100;
-    //Liczenie ratio
-    PA = marvelous / perfect;
-    return accuracy, PA;
+std::vector<float> user_judgements(6);
+std::string judgments[6] = {"300g", "300", "200", "100", "50", "miss"};
+std::vector<float> get_judgements() {
+  for (ulong i = 0; i < user_judgements.size(); i++) {
+    clean << "Amount of: " << judgments[i] << ": ";
+    cin >> user_judgements[i];
+  }
+  return user_judgements;
 };
-
-int main()
-{
-    do{
-    system("CLS");
-    acc(marvelous, perfect, great, good, bad, miss);
-    cout << "Twoje dokladne acc to: " << setprecision(15) << accuracy << "%"<<endl;
-    cout << "A twoje ratio to: 1:"/* << marvelous << ":" << perfect << " = "*/ << setprecision(4) << PA << endl;
-    cout << "Jeszcze raz? Y-Tak, N-Nie: "<< endl;
+void calculate() {
+  do {
+    clean;
+    float v1 =
+        (50 * user_judgements[4] + 100 * user_judgements[3] +
+         200 * user_judgements[2] +
+         300 * (user_judgements[1] + user_judgements[0])) /
+        (300 * (user_judgements[5] + user_judgements[4] + user_judgements[3] +
+                user_judgements[2] + user_judgements[1] + user_judgements[0])) *
+        100;
+    cout << "Acc:" << std::setprecision(6) << v1
+         << "%\n PA:" << user_judgements[0] / user_judgements[1] << endl;
+    cout << "Jeszcze raz? Y-Tak, N-Nie: " << endl;
     cin >> R;
-        if(R!= 'Y' || 'y')
-            return 0;
-    } while (R == 'Y' || 'y');
-    return 0;
+  } while (std::tolower(R) == 'y');
+}
+int main() {
+  user_judgements = get_judgements();
+  calculate();
+  return 0;
 }
